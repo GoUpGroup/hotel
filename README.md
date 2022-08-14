@@ -7,7 +7,7 @@ Hotel Managment system
 
 ## Team work
 1. Fuad Al-amoudi
-4. Mohammed Zobair 
+4. Murad Al-Amoudi
 5. Nasser Esmail Al-Ghaithi
 
 ## language
