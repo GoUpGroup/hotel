@@ -1,0 +1,242 @@
+
+@extends('admin.layouts.main')
+
+@section('title')
+    لوحة التحكم |المستخدمين
+
+@endsection
+@section('first-css')
+    <!-- third party css -->
+    <link href="assets/css/vendor/dataTables.bootstrap5.css" rel="stylesheet" type="text/css">
+    <link href="assets/css/vendor/responsive.bootstrap5.css" rel="stylesheet" type="text/css">
+    <!-- third party css end -->
+
+@endsection
+
+@section('css')
+
+
+@endsection
+@section('breadcrumb-item')
+    الفنادق
+@endsection
+@section('breadcrumb-item2')
+    عرض الفنادق
+@endsection
+@section('breadcrumb-item-active')
+    الفنادق
+@endsection
+
+@section('page-title')
+    عرض جميع الفنادق
+@endsection
+
+@section('content')
+
+    <div class="row">
+
+        <div class="col-12">
+           
+            @include('message')
+
+            <div class="card">
+                <div class="card-body">
+                    <button type="button" class="btn btn-danger mb-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        <i class="mdi mdi-plus-circle me-2"></i>إضافة فندق جديد
+                    </button>
+                    
+                    <!-- <div class="row mb-2">
+                        <div class="col-sm-4">
+                            <a href="javascript:void(0);" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle me-2"></i>اضافة مستخدم جديد</a>
+                        </div>
+
+                    </div> -->
+
+                    <div class="table-responsive">
+                         
+                        <table class="table table-centered table-striped dt-responsive nowrap w-100" id="products-datatable">
+                            <thead >
+                            <tr>
+                                <th style="width: 20px;">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="customCheck1">
+                                        <label class="form-check-label" for="customCheck1">&nbsp;</label>
+                                    </div>
+                                </th>
+                                <th>اسم الفندق</th>
+                                <th>اسم المالك</th>
+                                <th>رقم الهاتف</th>
+                                <th>العنوان</th>
+                                <th>اسم المستخدم</th>
+                                <th>الحالة</th>
+                                <th style="width: 75px;">العمليات</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($users as $user)
+
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="customCheck2">
+                                        <label class="form-check-label" for="customCheck2">&nbsp;</label>
+                                    </div>
+                                </td>
+                                <td class="table-user">
+                                    @isset( $user->profile->image)
+                                    <img src="assets/images/users/{{ $user->profile->image }}" alt="table-user" class="me-2 rounded-circle">
+
+                                    @endisset
+
+                                    <a href="javascript:void(0);" class="text-body fw-semibold">{{ $user->name }}</a>
+                                </td>
+                                <td>
+                                    @isset($user->profile->phone)
+                                    {{ $user->profile->phone }}
+                                    @endisset
+
+                                </td>
+                                <td>
+                                    {{ $user->email }}
+                                </td>
+                                <td>
+                               @isset( $user->profile->address)
+                               {{  $user->profile->address }}
+                               @endisset
+                                </td>
+                                <td>
+                                    @if($user->role==1)
+                                    {{ "موظف الاستقبال" }}
+                                    @else
+                                    {{ "مستخدم" }}
+                                    @endif
+                                </td>
+                                 {{-- <td></td>
+                                 <td></td> --}}
+                                <td>
+                                    @if($user->is_active==1)
+                                    <span class="badge badge-success-lighten">نشط</span>
+
+                                    @else
+                                        <span class="badge badge-danger-lighten">غير نشط</span>
+                                    @endif
+
+                                <td>
+                                    <a href="{{ route("edit_user",$user->id) }}" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                    @isset($user->is_active)
+                                        @if($user->is_active==1)
+                                        <span class="badge badge-success-lighten"></span>
+                                        <a href="{{ route("toggle_users",$user->id) }}" class="action-icon"> <i class="uil-eye-slash" ></i></a>
+                                        @else
+                                        <a href="{{ route("toggle_users",$user->id) }}" class="action-icon"> <i class="mdi mdi-eye"></i></a>
+                                        @endif
+                                        @endisset
+                                </td>
+                            </tr>
+
+                            @endforeach
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div> <!-- end card-body-->
+            </div> <!-- end card-->
+        </div> <!-- end col -->
+    </div>
+<!-- Button trigger modal -->
+  
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-simple modal-add-new-address">
+      <div class="modal-content">
+         
+        
+        <div class="modal-body">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="text-center mb-4">
+              <h3 class="address-title">اضافة فندق جديد</h3>
+              <p class="address-subtitle">يرجى تعبيئة جميع البيانات</p>
+            </div>
+            <form id="addNewAddressForm" class="row g-3 fv-plugins-bootstrap5 fv-plugins-framework" onsubmit="return false" novalidate="novalidate">
+    
+              <div class="col-12 col-md-6 fv-plugins-icon-container">
+                <label class="form-label" for="modalAddressFirstName">اسم الفندق</label>
+                <input type="text" id="modalAddressFirstName" name="hotelName" class="form-control" placeholder="يرجى ادخال اسم الفندق">
+              <div class="fv-plugins-message-container invalid-feedback"></div></div>
+              <div class="col-12 col-md-6 fv-plugins-icon-container">
+                <label class="form-label" for="modalAddressLastName">اسم المالك</label>
+                <input type="text" id="modalAddressLastName" name="owner" class="form-control" placeholder="يرجى ادخال اسم مالك الفندق">
+              <div class="fv-plugins-message-container invalid-feedback"></div>
+            </div>
+            <div class="col-12 col-md-6 fv-plugins-icon-container">
+                <label class="form-label" for="modalAddressLastName"> الهاتف</label>
+                <input type="text" id="modalAddressLastName" name="phone" class="form-control" placeholder="يرجى ادخال رقم الهاتف الخاص بالفندق">
+              <div class="fv-plugins-message-container invalid-feedback"></div>
+            </div>
+            <div class="col-12 col-md-6 fv-plugins-icon-container">
+                <label class="form-label" for="modalAddressLastName"> الموبايل</label>
+                <input type="text" id="modalAddressLastName" name="mobil" class="form-control" placeholder="يرجى ادخال رقم الموبايل الخاص بالمالك">
+              <div class="fv-plugins-message-container invalid-feedback"></div>
+            </div>
+            <div class="col-12 col-md-6 fv-plugins-icon-container">
+                <label class="form-label" for="modalAddressLastName">العنوان</label>
+                <input type="text" id="modalAddressLastName" name="address" class="form-control" placeholder="يرجى ادخال عنوان الفندق">
+              <div class="fv-plugins-message-container invalid-feedback"></div>
+            </div>
+            <div class="col-12 col-md-6 fv-plugins-icon-container">
+                <label class="form-label" for="modalAddressLastName">البريد الالكتروني</label>
+                <input type="text" id="modalAddressLastName" name="email" class="form-control" placeholder="يرجى ادخال  البريد الالكتروني الخاص بالمالك">
+              <div class="fv-plugins-message-container invalid-feedback"></div>
+            </div>
+            <div class="col-12 col-md-6 fv-plugins-icon-container">
+                <label class="form-label" for="modalAddressLastName">اسم المستخدم</label>
+                <input type="text" id="modalAddressLastName" name="userName" class="form-control" placeholder="يرجى ادخال اسم المستخدم الخاص بالمدير">
+              <div class="fv-plugins-message-container invalid-feedback"></div>
+            </div>
+            <div class="col-12 col-md-6 fv-plugins-icon-container">
+                <label class="form-label" for="modalAddressLastName">كلمة المرور</label>
+                <input type="text" id="modalAddressLastName" name="password" class="form-control" placeholder="يرجى ادخال  كلمة المرور الخاص بالمدير  ">
+              <div class="fv-plugins-message-container invalid-feedback"></div>
+            </div>
+              <div class="col-12 text-center">
+                <button type="submit" class="btn btn-primary me-sm-3 me-1">اضافة</button>
+                <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="modal" aria-label="Close">الغاء</button>
+              </div>
+            <div></div><input type="hidden"></form>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+  
+
+
+@endsection
+
+@section('script')
+<script>
+    var myModal = document.getElementById('myModal')
+    var myInput = document.getElementById('myInput')
+
+    myModal.addEventListener('shown.bs.modal', function () {
+  myInput.focus()
+})
+
+</script>
+
+
+    <!-- third party js -->
+    <script src="assets/js/vendor/jquery.dataTables.min.js"></script>
+    <script src="assets/js/vendor/dataTables.bootstrap5.js"></script>
+    <script src="assets/js/vendor/dataTables.responsive.min.js"></script>
+    <script src="assets/js/vendor/responsive.bootstrap5.min.js"></script>
+    <script src="assets/js/vendor/dataTables.checkboxes.min.js"></script>
+    <!-- third party js ends -->
+
+    <!-- demo app -->
+    <script src="assets/js/pages/demo.customers.js"></script>
+    <!-- end demo js-->
+
+@endsection
+
+

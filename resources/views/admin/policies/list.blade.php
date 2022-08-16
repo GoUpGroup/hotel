@@ -1,7 +1,7 @@
 @extends('admin.layouts.main')
 
 @section('title')
-    عرض السياسات
+    عرض المطلوبين
 
 @endsection
 
@@ -9,18 +9,18 @@
 
 @endsection
 @section('breadcrumb-item')
-    السياسات
+    المطلوبين
 @endsection
 @section('breadcrumb-item2')
-    عرض السياسات
+    عرض المطلوبين
 @endsection
 
 @section('breadcrumb-item-active')
-    السياسات
+    المطلوبين
 @endsection
 
 @section('page-title')
-    عرض السياسات
+    عرض المطلوبين
 @endsection
 
 @section('content')
@@ -28,6 +28,10 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
+                    <button type="button" class="btn btn-danger mb-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        <i class="mdi mdi-plus-circle me-2"></i>إضافة مطلوب جديد
+                    </button>
+                    
                     {{-- @if(session()->has('success'))
                     <div class="alert alert-success alert-dismissible bg-success text-white border-0 fade show" role="alert">
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -36,20 +40,19 @@
                     @endif --}}
                     @include('message')
 
-                    <div class="row mb-2">
+                    {{-- <div class="row mb-2">
                         <div class="col-sm-4">
-                            <a href="{{ route("add_policies") }}" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle me-2"></i>إضافة سياسة جديدة</a>
+                            <a href="{{ route("add_policies") }}" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle me-2"></i>إضافة مطلوب جديد</a>
                         </div>
-
-                    </div>
+                    </div> --}}
 
                     <div class="table-responsive">
                         <table class="table table-centered table-borderless table-hover w-100 dt-responsive nowrap" id="products-datatable">
                             <thead class="table-light">
                             <tr>
                                 <th>#</th>
-                                <th>السياسة</th>
-                                <th>الوصف</th>
+                                <th>الاسم</th>
+                                <th>رقم الهوية</th>
                                 <th>الحالة</th>
                                 <th style="width: 75px;">العمليات</th>
                             </tr>
@@ -98,7 +101,68 @@
     <!-- end row -->
 
 
-
+ <!-- Modal -->
+ <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-simple modal-add-new-address">
+      <div class="modal-content">
+         
+        
+        <div class="modal-body">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="text-center mb-4">
+              <h3 class="address-title">اضافة مطلوب جديد</h3>
+              <p class="address-subtitle">يرجى تعبيئة جميع البيانات</p>
+            </div>
+            <form id="addNewAddressForm" class="row g-3 fv-plugins-bootstrap5 fv-plugins-framework" onsubmit="return false" novalidate="novalidate">
+    
+              <div class="col-12 col-md-6 fv-plugins-icon-container">
+                <label class="form-label" for="modalAddressFirstName">اسم الشخص</label>
+                <input type="text" id="modalAddressFirstName" name="name" class="form-control" placeholder="يرجى ادخال اسم الشخص المطلوب">
+              <div class="fv-plugins-message-container invalid-feedback"></div></div>
+              <div class="col-12 col-md-6 fv-plugins-icon-container">
+                <label class="form-label" for="modalAddressLastName">جهة القدوم</label>
+                <select id="defaultSelect" class="form-select" name="state">
+                    <option>اختر احد المدن</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                  </select>              
+                  <div class="fv-plugins-message-container invalid-feedback"></div>
+            </div>
+              <div class="col-12 col-md-6 fv-plugins-icon-container">
+                <label class="form-label" for="modalAddressLastName">رقم البطاقة</label>
+                <input type="text" id="modalAddressLastName" name="numberCard" class="form-control" placeholder="يرجى ادخال رقم البطاقة  ">
+              <div class="fv-plugins-message-container invalid-feedback"></div>
+            </div>
+            
+            <div class="col-12 col-md-6 fv-plugins-icon-container">
+                <label class="form-label" for="modalAddressLastName"> رقم الجواز</label>
+                <input type="text" id="modalAddressLastName" name="numberPassport" class="form-control" placeholder="يرجى ادخال رقم  الجواز">
+              <div class="fv-plugins-message-container invalid-feedback"></div>
+            </div>
+            <div class="col-12 col-md-6 fv-plugins-icon-container">
+                <label class="form-label" for="modalAddressLastName"> صورة البطاقة</label>
+                <input class="form-control" type="file" id="formFile"  name="photoCard">
+               <div class="fv-plugins-message-container invalid-feedback"></div>
+            </div>
+            <div class="col-12 col-md-6 fv-plugins-icon-container">
+                <label for="formFile" class="form-label"> صورةالجواز</label>
+                <input class="form-control" type="file" id="formFile"  name="photoPassport">
+                <div class="fv-plugins-message-container invalid-feedback"></div>
+              </div>
+            
+             
+              <div class="col-12 text-center ">
+                <button type="submit" class="btn btn-primary me-sm-3 me-1">اضافة</button>
+                <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="modal" aria-label="Close">الغاء</button>
+              </div>
+            <div></div><input type="hidden"></form>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
 @endsection
 
 @section('script')
