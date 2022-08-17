@@ -43,7 +43,7 @@
                 <div class="collapse" id="sidebarProjects">
                     <ul class="side-nav-second-level">
                         <li>
-                            <a href="{{route('list-user')}}">عرض الفنادق</a>
+                            <a href="{{route('hotelist')}}">عرض الفنادق</a>
                         </li>
 
                     </ul>
@@ -58,7 +58,7 @@
                 <div class="collapse" id="sidebarLayouts">
                     <ul class="side-nav-second-level">
                         <li>
-                            <a href="{{route('list_policies')}}">عرض المطلوبين</a>
+                            <a href="{{route('listBlocklist')}}">عرض المطلوبين</a>
                         </li>
                         {{-- <li>
                             <a href="{{route('add_policies')}}">إضافة سياسة </a>

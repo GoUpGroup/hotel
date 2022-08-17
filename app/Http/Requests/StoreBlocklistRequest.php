@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateOwnerHotelRequest extends FormRequest
+class StoreBlocklistRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,10 @@ class UpdateOwnerHotelRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name'=>'required',
+             'nationality_id'=>'required',
+             'identity_no'=>'required ',
+            'passport_no'=>'required'
         ];
     }
 }

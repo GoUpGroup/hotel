@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
-use App\Models\OwnerHotel;
+use App\Models\Nationality;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class IdentityType extends Model
+class Blocklist extends Model
 {
     use HasFactory;
 
-   public function ownerHotel(){
-        return $this>hasMany(OwnerHotel::class,'identity_id');
+   public function nationality(){
+         return  $this->belongsTo(Nationality::class);
     }
 }

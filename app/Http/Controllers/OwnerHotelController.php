@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Hotel;
 use App\Models\OwnerHotel;
+use App\Models\Nationality;
+use App\Models\IdentityType;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\StoreOwnerHotelRequest;
 use App\Http\Requests\UpdateOwnerHotelRequest;
 
@@ -15,7 +20,15 @@ class OwnerHotelController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::with(["owner"])->get();
+        return  $users;
+        $nationalities = Nationality::get();
+        $indetityTypes = IdentityType::get();
+        return view('admin.hotels.list')
+                ->with(['users'=>$users,
+                        'indetityTypes'=>$indetityTypes,
+                        'nationalities'=>$nationalities,
+                        ]);
     }
 
     /**
@@ -25,7 +38,9 @@ class OwnerHotelController extends Controller
      */
     public function create()
     {
-        //
+        // $newUser = User::new();
+        // $newUser->user_name = 'Nasser ismail';
+        
     }
 
     /**
@@ -36,7 +51,37 @@ class OwnerHotelController extends Controller
      */
     public function store(StoreOwnerHotelRequest $request)
     {
-        //
+        $newUser = new User();
+        $newUser->name = $request->name;
+        $newUser->user_name = $request->user_name;
+        $newUser->email = $request->email;
+        $newUser->role=2;
+        $newUser->password=Hash::make($request->password);
+        $newUser->address = $request->address;
+        $newUser->phone = $request->phone;
+        $newUser->mobile = $request->mobile;
+        if($newUser->save()){
+            $user = User::orderBy('id', 'desc')->first();
+            $newOwner = new OwnerHotel();
+            $newOwner->user_id = $user->id;
+            $newOwner->identity_id = $request->identity_id;
+            $newOwner->nationality_id = $request->nationality_id;
+            $newOwner->identity_no = $request->identity_no;
+            if($newOwner->save()){
+                $ownerHotel = OwnerHotel::orderBy('id','desc')->first();
+                $newHotel  = new Hotel();
+                $newHotel->owner_hotel_id = $ownerHotel->id;
+                $newHotel->hotel_phone = $request->hotel_phone;
+                $newHotel->hotel_address = $request->hotel_address;
+                $newHotel->lisciens_no = $request->lisciens_no;
+                $newHotel->save();
+                return "الحمد لله";
+            }
+           
+            
+        }
+
+       
     }
 
     /**

@@ -17,7 +17,7 @@
             <h3>😖 هناك خطاء </h3>
             <h4> انقر على الزر في الاسفل للعودة الى الصفخة الرئيسية</h4>
 
-            <a href="{{ route('index') }}" class="btn btn-primary text-white"> الصفخة الرئيسية</a>
+            <a href="#" class="btn btn-primary text-white"> الصفخة الرئيسية</a>
         </div>
         <div class='error-img'>
             <img src="/assets/images/error/404.png" alt="">

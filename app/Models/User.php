@@ -1,14 +1,15 @@
 <?php
 
 namespace App\Models;
+use App\Models\OwnerHotel;
+use Laravel\Sanctum\HasApiTokens;
 use Bavix\Wallet\Traits\HasWallet;
 use Bavix\Wallet\Interfaces\Wallet;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Auth;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail,Wallet
 {
@@ -63,7 +64,11 @@ class User extends Authenticatable implements MustVerifyEmail,Wallet
     {
         return $this->hasMany(Notification::class, 'to_user_id');
     }
-
+    public function owner()
+    {
+        return $this->hasMany(OwnerHotel::class,'user_id');
+    }
+    
    
 
 

@@ -32,17 +32,21 @@
                         <i class="mdi mdi-plus-circle me-2"></i>إضافة مطلوب جديد
                     </button>
                     
-                    {{-- @if(session()->has('success'))
-                    <div class="alert alert-success alert-dismissible bg-success text-white border-0 fade show" role="alert">
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        <strong>{{ session()->get('success') }} </strong>
-                    </div>
-                    @endif --}}
+                    <div class="card-body">
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                     @include('message')
 
                     {{-- <div class="row mb-2">
                         <div class="col-sm-4">
-                            <a href="{{ route("add_policies") }}" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle me-2"></i>إضافة مطلوب جديد</a>
+                            <a href="{{ route("add_blocklistPersons") }}" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle me-2"></i>إضافة مطلوب جديد</a>
                         </div>
                     </div> --}}
 
@@ -53,25 +57,28 @@
                                 <th>#</th>
                                 <th>الاسم</th>
                                 <th>رقم الهوية</th>
+                                <th>الجنسية</th>
                                 <th>الحالة</th>
                                 <th style="width: 75px;">العمليات</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($policies as $police)
+                            @foreach($blocklistPersons as $person)
 
 
                             <tr>
                                 <td class="table-user">
                                     {{ $loop->iteration }}
                                 </td>
-                                <td>{{$police->police}}</td>
-                                <td>{{$police->description}}</td>
+                                <td>{{$person->name}}</td>
+                                <td>{{$person->passport_no}}</td>
+                                <td>{{$person->nationality->nationality}}</td>
+                                
                                 <td>
-                                    @if($police->is_active==1)
-                                    <span class="badge badge-success-lighten">نشط</span>
+                                    @if($person->is_active==1)
+                                    <span class="badge badge-success-lighten">تم القبض عليه</span>
                                     @else
-                                        <span class="badge badge-danger-lighten">غير نشط</span>
+                                        <span class="badge badge-danger-lighten">مطلوب امني</span>
                                     @endif
                                 </td>
 
@@ -79,13 +86,13 @@
 
 
                                 <td>
-                                    <a href="{{ route("edit_policies",$police->id) }}" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
-                                    @isset($police->is_active)
-                                    @if($police->is_active==1)
+                                    <a href="{{ route("edit_blocklistPersons",$person->id) }}" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                    @isset($person->is_active)
+                                    @if($person->is_active==1)
                                     <span class="badge badge-success-lighten"></span>
-                                    <a href="{{ route("toggle_policies",$police->id) }}" class="action-icon"> <i class="uil-eye-slash" ></i></a>
+                                    <a href="{{ route("toggle_blocklistPersons",$person->id) }}" class="action-icon"> <i class="uil-eye-slash" ></i></a>
                                     @else
-                                    <a href="{{ route("toggle_policies",$police->id) }}" class="action-icon"> <i class="mdi mdi-eye"></i></a>
+                                    <a href="{{ route("toggle_blocklistPersons",$person->id) }}" class="action-icon"> <i class="mdi mdi-eye"></i></a>
                                     @endif
                                     @endisset
                                 </td>
@@ -105,7 +112,6 @@
  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-simple modal-add-new-address">
       <div class="modal-content">
-         
         
         <div class="modal-body">
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -113,51 +119,45 @@
               <h3 class="address-title">اضافة مطلوب جديد</h3>
               <p class="address-subtitle">يرجى تعبيئة جميع البيانات</p>
             </div>
-            <form id="addNewAddressForm" class="row g-3 fv-plugins-bootstrap5 fv-plugins-framework" onsubmit="return false" novalidate="novalidate">
-    
+            <form method="POST" action="{{route('storeblocklist')}}" id="addNewAddressForm" class="row g-3 fv-plugins-bootstrap5 fv-plugins-framework"  novalidate="novalidate">
+                @csrf
               <div class="col-12 col-md-6 fv-plugins-icon-container">
                 <label class="form-label" for="modalAddressFirstName">اسم الشخص</label>
                 <input type="text" id="modalAddressFirstName" name="name" class="form-control" placeholder="يرجى ادخال اسم الشخص المطلوب">
               <div class="fv-plugins-message-container invalid-feedback"></div></div>
               <div class="col-12 col-md-6 fv-plugins-icon-container">
-                <label class="form-label" for="modalAddressLastName">جهة القدوم</label>
-                <select id="defaultSelect" class="form-select" name="state">
-                    <option>اختر احد المدن</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                <label class="form-label" for="ationality_id">الجنسية</label>
+                <select id="defaultSelect" class="form-select" name="nationality_id">
+                    <option value="">اختر الجنسية</option>
+                    
+                    @isset($nationalities)
+                    @foreach ($nationalities as $nationality)
+                    <option value=" {{$nationality->id}}"> 
+                        @isset ($nationality->nationality){{$nationality->nationality}} @endisset
+                    </option>
+                    @endforeach
+                    @endisset
                   </select>              
                   <div class="fv-plugins-message-container invalid-feedback"></div>
             </div>
               <div class="col-12 col-md-6 fv-plugins-icon-container">
-                <label class="form-label" for="modalAddressLastName">رقم البطاقة</label>
-                <input type="text" id="modalAddressLastName" name="numberCard" class="form-control" placeholder="يرجى ادخال رقم البطاقة  ">
+                <label class="form-label" for="identity_no">رقم البطاقة</label>
+                <input type="number" id="identity_no" name="identity_no" class="form-control" placeholder="يرجى ادخال رقم البطاقة  ">
               <div class="fv-plugins-message-container invalid-feedback"></div>
             </div>
             
             <div class="col-12 col-md-6 fv-plugins-icon-container">
-                <label class="form-label" for="modalAddressLastName"> رقم الجواز</label>
-                <input type="text" id="modalAddressLastName" name="numberPassport" class="form-control" placeholder="يرجى ادخال رقم  الجواز">
+                <label class="form-label" for="passport_no"> رقم الجواز</label>
+                <input type="number" id="passport_no" name="passport_no" class="form-control" placeholder="يرجى ادخال رقم  الجواز">
               <div class="fv-plugins-message-container invalid-feedback"></div>
             </div>
-            <div class="col-12 col-md-6 fv-plugins-icon-container">
-                <label class="form-label" for="modalAddressLastName"> صورة البطاقة</label>
-                <input class="form-control" type="file" id="formFile"  name="photoCard">
-               <div class="fv-plugins-message-container invalid-feedback"></div>
-            </div>
-            <div class="col-12 col-md-6 fv-plugins-icon-container">
-                <label for="formFile" class="form-label"> صورةالجواز</label>
-                <input class="form-control" type="file" id="formFile"  name="photoPassport">
-                <div class="fv-plugins-message-container invalid-feedback"></div>
-              </div>
-            
              
               <div class="col-12 text-center ">
                 <button type="submit" class="btn btn-primary me-sm-3 me-1">اضافة</button>
                 <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="modal" aria-label="Close">الغاء</button>
               </div>
-            <div></div><input type="hidden"></form>
-            
+            <div></div><input type="hidden">
+        </form>    
           </div>
         
       </div>

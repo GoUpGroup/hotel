@@ -15,8 +15,6 @@ class PoliciesController extends Controller
     public function listPolicies()
     {
         try {
-
-
             $policies = Policies::orderBy('id', 'desc')->get();
             return view("admin.policies.list")->with("policies", $policies);
         } catch (\Throwable $error) {

@@ -5,11 +5,13 @@ use App\Http\Controllers\CityController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\StateController;
  use App\Http\Controllers\PoliciesController;
+use App\Http\Controllers\WalltsController;
 use \App\Http\Controllers\CategoryController;
+use App\Http\Controllers\BlocklistController;
+use App\Http\Controllers\OwnerHotelController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\VehicleTypeController;
-use App\Http\Controllers\WalltsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +27,7 @@ use App\Http\Controllers\WalltsController;
 /*Category*/
 Route::group(['middleware' => 'is.admin'], function () {
     Route::get('/superAdmin', [SuperAdminController::class, 'index'])->name('superAdmin');
-    Route::get('/list_policies', [PoliciesController::class, "listPolicies"])->name("list_policies");
+    Route::get('/blocklist', [PoliciesController::class, "listBlocklist"])->name("list_policies");
     Route::get('/add_policies', [PoliciesController::class, "addPolicies"])->name("add_policies");
     Route::post('/save_policies', [PoliciesController::class, "store"])->name("save_policies");
     Route::get('edit_policies/{PoliceId}', [PoliciesController::class, 'edit'])->name('edit_policies');
@@ -52,12 +54,20 @@ Route::group(['middleware' => 'is.admin'], function () {
 
     Route::get('/add_city', [CityController::class, "create"])->name("add_city");
     Route::post('/save_city', [CityController::class, "store"])->name("store_city");
-    Route::get('edit_city/{cityId}', [CityController::class, 'edit'])->name('edit_city');
-    Route::post('update_city/{cityId}', [CityController::class, 'update'])->name('update_city');
-    Route::get('toggle_city/{cityId}', [CityController::class, 'toggle'])->name('toggle_city');
-    Route::get('list_city', [CityController::class, 'listCity'])->name('list_City');
-
+    Route::get('/edit_city/{cityId}', [CityController::class, 'edit'])->name('edit_city');
+    Route::post('/update_city/{cityId}', [CityController::class, 'update'])->name('update_city');
+    Route::get('/toggle_city/{cityId}', [CityController::class, 'toggle'])->name('toggle_city');
+    Route::get('/list_city', [CityController::class, 'listCity'])->name('list_City');
     Route::get('/report', [WalltsController::class, 'index'])->name('report');
 
+    ##Blocklist
+    Route::get('/blocklist',[BlocklistController::class,'index'])->name('listBlocklist');
+    Route::post('/storeblocklist',[BlocklistController::class,'store'])->name('storeblocklist');
+    Route::get('/edit_blocklistPersons/{personId}',[BlocklistController::class,'edit'])->name('edit_blocklistPersons');
+    Route::post('/update_blocklistPersons/{personId}',[BlocklistController::class,'update'])->name('updateblocklist');
+    Route::get('/toggle_blocklistPersons/{personId}',[BlocklistController::class,'toggle'])->name('toggle_blocklistPersons');
 
+    ##Owner Hotel
+    Route::get('/hotellist',[OwnerHotelController::class,'index'])->name('hotelist');
+    Route::get('/store_owner_hotel',[OwnerHotelController::class,'store'])->name('storeOwnerHotel');
 });

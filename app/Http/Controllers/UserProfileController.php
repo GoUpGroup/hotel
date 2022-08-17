@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\UserProfile;
-use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Nationality;
+use App\Models\UserProfile;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 

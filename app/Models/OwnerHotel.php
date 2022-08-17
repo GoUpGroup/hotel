@@ -9,6 +9,10 @@ class OwnerHotel extends Model
 {
     use HasFactory;
     
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
     function identity(){
         return $this->belonTo(IdentityType::class);
     }
@@ -16,4 +20,7 @@ class OwnerHotel extends Model
     function nationality(){
         return $this->belonTo(Nationality::class);
     }
+    public function hotel(){
+        return $this->belongsTo(Hotel::class,'owner_hotel_id');
+     }
 }
