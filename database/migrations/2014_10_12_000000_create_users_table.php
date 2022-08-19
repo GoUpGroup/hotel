@@ -18,13 +18,13 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('user_name')->unique();
-            $table->string('email')->nullable();
+            $table->string('email');
             $table->integer('role')->default(2);
             $table->timestamp('email_verified_at')->default(now());
             $table->string('password');
-            $table->string('address')>nullable();
-            $table->int('phone')->nullable();
-            $table->int('mobile')->nullable();
+            $table->string('address')->default('اليمن');;
+            $table->string('phone')->default(0000);
+            $table->string('mobile')->default(0000);
             $table->boolean('is_active')->default(1);
             $table->rememberToken()->default(Str::random(10));
             $table->timestamps();

@@ -17,8 +17,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('owner_hotel_id');
             $table->foreign('owner_hotel_id')->references('id')->on('owner_hotels')->onUpdate('cascade')->onDelete('cascade');
-            $table->unsignedBigInteger('hotel_phone');
+            $table->integer('hotel_phone')->nullable();
             $table->string('hotel_address');
+            $table->string('hotelName');
             $table->unsignedBigInteger('lisciens_no');
             $table->timestamps();
         });

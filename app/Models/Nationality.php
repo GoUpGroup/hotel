@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Escort;
+use App\Models\Booking;
 use App\Models\Blocklist;
 use App\Models\OwnerHotel;
 use Illuminate\Database\Eloquent\Model;
@@ -19,5 +21,12 @@ class Nationality extends Model
 
         return $this->hanMany(OwnerHotel::class,'nationality_id');
     }
+    public function bookinglNationality(){
+        return $this->hanMany(Booking::class,'nationality_id');
+    }
+    public function escortlNationality(){
+        return $this->hanMany(Escort::class,'nationality_id');
+    }
+    
    
 }

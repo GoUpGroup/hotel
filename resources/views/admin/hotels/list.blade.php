@@ -67,14 +67,12 @@
                                 <th>اسم المالك</th>
                                 <th>رقم الهاتف</th>
                                 <th>العنوان</th>
-                                <th>اسم المستخدم</th>
                                 <th>الحالة</th>
                                 <th style="width: 75px;">العمليات</th>
                             </tr>
                             </thead>
                             <tbody>
-                                @foreach($users as $user)
-
+                                @foreach($hotels as $hotel)
                             <tr>
                                 <td>
                                     <div class="form-check">
@@ -82,53 +80,28 @@
                                         <label class="form-check-label" for="customCheck2">&nbsp;</label>
                                     </div>
                                 </td>
-                                <td class="table-user">
-                                    @isset( $user->profile->image)
-                                    <img src="assets/images/users/{{ $user->profile->image }}" alt="table-user" class="me-2 rounded-circle">
+                                <td>@isset($hotel->hotel[0]->hotelName) @endisset{{$hotel->hotel[0]->hotelName}}</td>
+                                <td>@isset($hotel->user->name) @endisset{{$hotel->user->name}}</td>
+                                <td>@isset($hotel->hotel[0]->hotel_phone) @endisset{{$hotel->hotel[0]->hotel_phone}}</td>
+                                <td>@isset($hotel->hotel[0]->hotel_address) @endisset{{$hotel->hotel[0]->hotel_address}}</td>
+                                <td>
+                                   @isset($hotel->user->is_active)
+                                   @if($hotel->user->is_active==1)
+                                   <span class="badge badge-success-lighten">مصرح</span>
 
-                                    @endisset
-
-                                    <a href="javascript:void(0);" class="text-body fw-semibold">{{ $user->name }}</a>
-                                </td>
-                                <td>
-                                    @isset($user->profile->phone)
-                                    {{ $user->profile->phone }}
-                                    @endisset
-
-                                </td>
-                                <td>
-                                    {{ $user->email }}
-                                </td>
-                                <td>
-                               @isset( $user->profile->address)
-                               {{  $user->profile->address }}
-                               @endisset
-                                </td>
-                                <td>
-                                    @if($user->role==1)
-                                    {{ "موظف الاستقبال" }}
-                                    @else
-                                    {{ "مستخدم" }}
-                                    @endif
-                                </td>
-                                 {{-- <td></td>
-                                 <td></td> --}}
-                                <td>
-                                    @if($user->is_active==1)
-                                    <span class="badge badge-success-lighten">نشط</span>
-
-                                    @else
-                                        <span class="badge badge-danger-lighten">غير نشط</span>
-                                    @endif
+                                   @else
+                                       <span class="badge badge-danger-lighten">غير مصرح </span>
+                                   @endif
+                                   @endisset
 
                                 <td>
-                                    <a href="{{ route("edit_user",$user->id) }}" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
-                                    @isset($user->is_active)
-                                        @if($user->is_active==1)
+                                    <a href="{{ route("edithotel",$hotel->id) }}" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                    @isset($hotel->is_active)
+                                        @if($hotel->is_active==1)
                                         <span class="badge badge-success-lighten"></span>
-                                        <a href="{{ route("toggle_users",$user->id) }}" class="action-icon"> <i class="uil-eye-slash" ></i></a>
+                                        <a href="{{ route("toggle_users",$hotel->id) }}" class="action-icon"> <i class="uil-eye-slash" ></i></a>
                                         @else
-                                        <a href="{{ route("toggle_users",$user->id) }}" class="action-icon"> <i class="mdi mdi-eye"></i></a>
+                                        <a href="{{ route("toggle_users",$hotel->id) }}" class="action-icon"> <i class="mdi mdi-eye"></i></a>
                                         @endif
                                         @endisset
                                 </td>
@@ -232,7 +205,7 @@
             <div class="col-12 col-md-6 fv-plugins-icon-container">
                 <label class="form-label" for="ationality_id">نوع الهوية</label>
                 <select id="defaultSelect" class="form-select" name="identity_id">
-                    <option value=""> نوع الهوية</option>
+                    <option value=""> اختر نوع الهوية</option>
                     
                     {{-- @isset($indetityTypes) --}}
                     @foreach ($indetityTypes as $indetityType)

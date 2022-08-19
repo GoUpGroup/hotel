@@ -20,28 +20,20 @@ class OwnerHotelController extends Controller
      */
     public function index()
     {
-        $users = User::with(["owner"])->get();
-        return  $users;
-        $nationalities = Nationality::get();
+        // $users = User::with(["owner"])->get();
+        $hotels = OwnerHotel::with(["hotel","user"])->get();
+     
+        // return $hotels;
+        $nationalities  = Nationality::get();
         $indetityTypes = IdentityType::get();
         return view('admin.hotels.list')
-                ->with(['users'=>$users,
+                ->with(['hotels'=>$hotels,
                         'indetityTypes'=>$indetityTypes,
                         'nationalities'=>$nationalities,
                         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        // $newUser = User::new();
-        // $newUser->user_name = 'Nasser ismail';
-        
-    }
+   
 
     /**
      * Store a newly created resource in storage.
@@ -73,7 +65,9 @@ class OwnerHotelController extends Controller
                 $newHotel->owner_hotel_id = $ownerHotel->id;
                 $newHotel->hotel_phone = $request->hotel_phone;
                 $newHotel->hotel_address = $request->hotel_address;
+                $newHotel->hotelName = $request->hotelName;
                 $newHotel->lisciens_no = $request->lisciens_no;
+                
                 $newHotel->save();
                 return "الحمد لله";
             }

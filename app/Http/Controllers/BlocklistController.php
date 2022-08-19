@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Hotel;
+use App\Models\Escort;
+use App\Models\Booking;
 use App\Models\Policies;
 use App\Models\Blocklist;
+use App\Models\OwnerHotel;
 use App\Models\Nationality;
 use App\Models\Notification;
 use Illuminate\Http\Request;
@@ -22,11 +26,16 @@ class BlocklistController extends Controller
         try {
             $nationalities = Nationality::get();
             $blocklistPersons = Blocklist::with("nationality")->orderBy('id', 'desc')->get();
-         
-           
+            $hotelsNo = count(Hotel::get());
+            $visitorsNoNo =count(Booking::get());
+            $escortsNo = count(Escort::get());
+        
             return view("admin.blocklist.list")
                     ->with(['nationalities'=>$nationalities,
-                            'blocklistPersons'=>$blocklistPersons]);
+                            'blocklistPersons'=>$blocklistPersons,
+                            'hotelsNo'=>$hotelsNo,
+                            'visitorsNo'=>$visitorsNo,
+                            'escortsNo'=>$escortsNo]);
         } catch (\Throwable $error) {
             return redirect()->back()->with(['error' => 'عذرا هناك خطا لم تتم اضافة البيانات']);
         }

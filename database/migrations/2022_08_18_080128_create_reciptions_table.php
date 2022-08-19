@@ -13,20 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('owner_hotels', function (Blueprint $table) {
+        Schema::create('reciptions', function (Blueprint $table) {
             $table->id();
             
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             
-            $table->unsignedBigInteger('identity_id');
-            $table->foreign('identity_id')->references('id')->on('identity_types')->onUpdate('cascade')->onDelete('cascade');
-            $table->unsignedBigInteger('identity_no')->unique();
-
-            $table->unsignedBigInteger('nationality_id');
-            $table->foreign('nationality_id')->references('id')->on('nationalities')->onUpdate('cascade')->onDelete('cascade');
-           
-            $table->boolean("is_active")->default(1);
+            $table->unsignedBigInteger('hotel_id');
+            $table->foreign('hotel_id')->references('id')->on('hotels')->onUpdate('cascade')->onDelete('cascade');
+            
             $table->timestamps();
         });
     }
@@ -38,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('owner_hotels');
+        Schema::dropIfExists('reciptions');
     }
 };

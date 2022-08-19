@@ -3,17 +3,16 @@
 namespace App\Models;
 use App\Models\OwnerHotel;
 use Laravel\Sanctum\HasApiTokens;
-use Bavix\Wallet\Traits\HasWallet;
-use Bavix\Wallet\Interfaces\Wallet;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable implements MustVerifyEmail,Wallet
+class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable,HasWallet;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -67,6 +66,16 @@ class User extends Authenticatable implements MustVerifyEmail,Wallet
     public function owner()
     {
         return $this->hasMany(OwnerHotel::class,'user_id');
+    } 
+     
+    public function reciption()
+    {
+        return $this->belongsTo(Reciption::class,'user_id');
+    }
+    
+    public function booking()
+    {
+        return $this->belongsTo(Reciption::class,'reciption_id');
     }
     
    

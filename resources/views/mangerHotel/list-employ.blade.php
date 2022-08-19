@@ -65,41 +65,48 @@
                             <th style="width: 75px;">العمليات</th>
                         </tr>
                         </thead>
-                        <tbody>
+                    <tbody>
+                        @isset($reciprtions)
+                        @foreach ($reciprtions as $reciprtion)
                         <tr>
+                            <td></td>
+                            <td>@isset($reciprtion->user->name)
+                                {{$reciprtion->user->name}}</td>
+                                @endisset
                             <td>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="customCheck2">
-                                    <label class="form-check-label" for="customCheck2">&nbsp;</label>
-                                </div>
-                            </td>
-                            <td class="table-user">
-                                <a href="javascript:void(0);" class="text-body fw-semibold">مراد</a>
-                            </td>
-                            <td>
-                                738115430
-                            </td>
-                            <td>
-                                mur@ggh.com
-                            </td>
-                             
-                             
-                            <td>
+                                @isset($reciprtion->user->mobile)
+                                {{$reciprtion->user->mobile}}</td>
+                                @endisset
                                 
-                                <span class="badge badge-success-lighten">نشط</span>
+                            <td>@isset($reciprtion->user->email)
+                                {{$reciprtion->user->email}}
+                            @endisset</td>
+                            <td>
+                            @isset($reciprtion->user->is_active)
+                            @if($reciprtion->user->is_active==1)
+                            <span class="badge badge-success-lighten">نشط</span>
 
-                               
-                                    <span class="badge badge-danger-lighten">غير نشط</span>
-                                
+                            @else
+                                <span class="badge badge-danger-lighten">غير نشط</span>
+                            @endif
+                            @endisset 
 
                             <td>
-                                <a href="" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
-                                
+                                <a href="{{ route("edit_reciption",$reciprtion->user->id) }}" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                @isset($reciprtion->user->is_active)
+                                    @if($reciprtion->user->is_active==1)
+                                    <span class="badge badge-success-lighten"></span>
+                                    <a href="{{ route("toggle_users",$reciprtion->user->id) }}" class="action-icon"> <i class="uil-eye-slash" ></i></a>
+                                    @else
+                                    <a href="{{ route("toggle_users",$reciprtion->user->id) }}" class="action-icon"> <i class="mdi mdi-eye"></i></a>
+                                    @endif
+                                    @endisset
                             </td>
+
                         </tr>
-
-                        
-
+                    @endforeach
+                        @endisset
+                      
                         </tbody>
                     </table>
                 </div>
@@ -121,16 +128,16 @@
           <h3 class="address-title">اضافة موظف جديد</h3>
           <p class="address-subtitle">يرجى تعبيئة جميع البيانات</p>
         </div>
-        <form id="addNewAddressForm" class="row g-3 fv-plugins-bootstrap5 fv-plugins-framework" onsubmit="return false" novalidate="novalidate">
-
+        <form method="POST" id="addNewAddressForm" class="row g-3 fv-plugins-bootstrap5 fv-plugins-framework" onsubmit="return true" novalidate="novalidate" action="{{route('storeReciption')}}">
+            @csrf
         <div class="col-12 col-md-6 fv-plugins-icon-container">
-        <label class="form-label" for="modalAddressFirstName">اسم الموظف</label>
-        <input type="text" id="modalAddressFirstName" name="hotelName" class="form-control" placeholder="يرجى ادخال اسم الموظف">
+        <label class="form-label" for="name">اسم الموظف</label>
+        <input type="text" id="name" name="name" class="form-control" placeholder="يرجى ادخال اسم الموظف">
         <div class="fv-plugins-message-container invalid-feedback"></div></div>
            
         <div class="col-12 col-md-6 fv-plugins-icon-container">
-            <label class="form-label" for="modalAddressLastName"> الموبايل</label>
-            <input type="text" id="modalAddressLastName" name="mobil" class="form-control" placeholder="يرجى ادخال رقم الموبايل الخاص بالموظف">
+            <label class="form-label" for="mobile"> الموبايل</label>
+            <input type="text" id="mobile" name="mobile" class="form-control" placeholder="يرجى ادخال رقم الموبايل الخاص بالموظف">
           <div class="fv-plugins-message-container invalid-feedback"></div>
         </div>
          
@@ -147,13 +154,13 @@
             </select>
         </div>
         <div class="col-12 col-md-6 fv-plugins-icon-container">
-            <label class="form-label" for="modalAddressLastName">اسم المستخدم</label>
-            <input type="text" id="modalAddressLastName" name="userName" class="form-control" placeholder="يرجى ادخال اسم المستخدم الخاص بالموظف">
+            <label class="form-label" for="user_name">اسم المستخدم</label>
+            <input type="text" id="user_name" name="user_name" class="form-control" placeholder="يرجى ادخال اسم المستخدم الخاص بالموظف">
           <div class="fv-plugins-message-container invalid-feedback"></div>
         </div>
         <div class="col-12 col-md-6 fv-plugins-icon-container">
-            <label class="form-label" for="modalAddressLastName">كلمة المرور</label>
-            <input type="text" id="modalAddressLastName" name="password" class="form-control" placeholder="يرجى ادخال  كلمة المرور الخاص بالموظف  ">
+            <label class="form-label" for="password">كلمة المرور</label>
+            <input type="text" id="password" name="password" class="form-control" placeholder="يرجى ادخال  كلمة المرور الخاص بالموظف  ">
           <div class="fv-plugins-message-container invalid-feedback"></div>
         </div>
           <div class="col-12 text-center">

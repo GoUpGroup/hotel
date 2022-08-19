@@ -38,7 +38,6 @@ Route::group(['middleware' => 'is.admin'], function () {
     Route::get('toggle_users/{userId}', [UserProfileController::class, 'toggle'])->name('toggle_users');
     Route::get('edit_users/{userId}', [UserProfileController::class, 'editUser'])->name('edit_user');
     Route::post('update_user/{PoliceId}', [UserProfileController::class, 'updateUser'])->name('update_users');
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin');
 
     
 ############## route address
@@ -61,6 +60,7 @@ Route::group(['middleware' => 'is.admin'], function () {
     Route::get('/report', [WalltsController::class, 'index'])->name('report');
 
     ##Blocklist
+    Route::get('/admin', [BlocklistController::class, 'index'])->name('admin');
     Route::get('/blocklist',[BlocklistController::class,'index'])->name('listBlocklist');
     Route::post('/storeblocklist',[BlocklistController::class,'store'])->name('storeblocklist');
     Route::get('/edit_blocklistPersons/{personId}',[BlocklistController::class,'edit'])->name('edit_blocklistPersons');
@@ -70,4 +70,5 @@ Route::group(['middleware' => 'is.admin'], function () {
     ##Owner Hotel
     Route::get('/hotellist',[OwnerHotelController::class,'index'])->name('hotelist');
     Route::get('/store_owner_hotel',[OwnerHotelController::class,'store'])->name('storeOwnerHotel');
+    Route::get('/edit_hotel/{id}',[OwnerHotelController::class,'edit'])->name('edithotel');
 });

@@ -2,16 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Booking;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class OwnerHotel extends Model
+class Escort extends Model
 {
     use HasFactory;
-    
-    public function user()
+
+    public function booking()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Booking::class);
     }
     function identity(){
         return $this->belonTo(IdentityType::class);
@@ -20,7 +21,4 @@ class OwnerHotel extends Model
     function nationality(){
         return $this->belonTo(Nationality::class);
     }
-    public function hotel(){
-        return $this->hasMany(Hotel::class,'owner_hotel_id');
-     }
 }

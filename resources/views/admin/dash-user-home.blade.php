@@ -38,8 +38,11 @@
                         <div class="card shadow-none m-0 border-start">
                             <div class="card-body text-center">
                                 <span class="mdi mdi-account" style="font-size: 24px;"></span>
-                                <h3><span>5</span></h3>
-                                <p class="text-muted font-15 mb-0">عدد الزوار</p>
+                                <h3><span>@isset($visitors)
+                                    {{count($visitors)}}
+                                    @else 0
+                                @endisset</span></h3>
+                                <p class="text-muted font-15 mb-0">عدد النزلاء</p>
                             </div>
                         </div>
                     </div>
@@ -98,44 +101,51 @@
                                 </div>
                             </th>
                             <th>اسم النزيل</th>
+                            <td>رقم الطابق</td>
                             <th>رقم الغرفة</th>
-                             
-                            <th>النوع</th>
+                            <th>المرافقين</th>
+                            <th>الحالة</th>
                             <th style="width: 75px;">العمليات</th>
                         </tr>
                         </thead>
                         <tbody>
-                            {{-- @foreach($users as $user) --}}
-
-                        <tr>
-                            <td>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="customCheck2">
-                                    <label class="form-check-label" for="customCheck2">&nbsp;</label>
-                                </div>
-                            </td>
-                            <td class="table-user">
-                                مراد حسن العمودي
-                            </td>
-                            <td>
-                               201
-                            </td>
-                             
-                            <td>
-                                مرافق
-                            </td>
-                            <td>
-                                مرافق
-                            </td>
-                            
-                                {{-- <a href="{{ route("edit_user",$user->id) }}" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
-                               --}} 
-                             
-
-                        </tr> 
-
-                        
-
+                            @isset($visitors)
+                            @foreach ($visitors as $gust)
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="customCheck2">
+                                        <label class="form-check-label" for="customCheck2">&nbsp;</label>
+                                    </div>
+                                </td>
+                                <td class="table-user">
+                                    @isset($gust->visitor_name)
+                                        {{$gust->visitor_name}}
+                                    @endisset
+                                </td>
+                                <td>
+                                    @isset($gust->room_no)
+                                        {{$gust->room_no}}
+                                    @endisset
+                                  </td>
+                                   <td>
+                                    @isset($gust->floor_no)
+                                        {{$gust->floor_no}}
+                                    @endisset
+                                  </td>
+                                 
+                                <td>
+                                    <select name="" id="">
+                                        @foreach ($gust->escort as $escort)
+                                            <option value="">
+                                                {{$escort->escort_name}}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </td>         
+                            </tr>     
+                            @endforeach
+                            @endisset
                         </tbody>
                     </table>
                 </div>
@@ -157,58 +167,81 @@
             <h3 class="address-title">اضافة نزيل جديد</h3>
             <p class="address-subtitle">يرجى تعبيئة جميع البيانات</p>
             </div>
-            <form id="addNewAddressForm" class="row g-3 fv-plugins-bootstrap5 fv-plugins-framework" onsubmit="return false" novalidate="novalidate">
-
+            <form action="{{route('newBooking')}}" method="POST" id="addNewAddressForm" class="row g-3 fv-plugins-bootstrap5 fv-plugins-framework" onsubmit="return true" novalidate="novalidate">
+                @csrf
             <div class="col-12 col-md-6 fv-plugins-icon-container">
-                <label class="form-label" for="modalAddressFirstName">اسم النزيل</label>
-                <input type="text" id="modalAddressFirstName" name="name" class="form-control" placeholder="يرجى ادخال اسم النزيل">
+                <label class="form-label" for="visitor_name">اسم النزيل</label>
+                <input type="text" id="visitor_name" name="visitor_name" class="form-control" placeholder="يرجى ادخال اسم النزيل">
+                <div class="fv-plugins-message-container invalid-feedback"></div>
+            </div>
+            <div class="col-12 col-md-6 fv-plugins-icon-container center">
+                <label class="form-label" for="ationality_id">الجنسية</label>
+                <select id="defaultSelect" class="form-select" name="nationality_id">
+                    <option value="">اختر الجنسية</option>
+                    
+                    @isset($nationalities)
+                    @foreach ($nationalities as $nationality)
+                    <option value=" {{$nationality->id}}"> 
+                        @isset ($nationality->nationality){{$nationality->nationality}} @endisset
+                    </option>
+                    @endforeach
+                    @endisset
+                  </select>              
+                  <div class="fv-plugins-message-container invalid-feedback"></div>
+            </div>
+          
+          
+            <div class="col-12 col-md-6 fv-plugins-icon-container">
+                <label for="identity_id" class="form-label">نوع الهوية</label>
+                <select name="identity_id" class="form-select">
+                    <option value=""> اختر نوع الهوية</option>   
+                    {{-- @isset($indetityTypes) --}}
+                    @foreach ($indetityTypes as $indetityType)
+                    <option value=" {{$indetityType->id}}"> 
+                       @isset($indetityType->identity_type) {{$indetityType->identity_type}} @endisset
+                    </option>
+                    @endforeach
+                    {{-- @endisset --}}  </select>
+            </div>
+            <div class="col-12 col-md-6 fv-plugins-icon-container">
+                <label class="form-label" for="identity_no">رقم الهوية</label>
+                <input type="number" id="identity_no" name="identity_no" class="form-control" placeholder="يرجى ادخال رقم الهوية ">
                 <div class="fv-plugins-message-container invalid-feedback"></div>
             </div>
             <div class="col-12 col-md-6 fv-plugins-icon-container">
-                <label class="form-label" for="modalAddressLastName">رقم الغرفة</label>
-                <input type="text" id="modalAddressLastName" name="numberRoom" class="form-control" placeholder="يرجى ادخال اسم مالك الفندق">
+                <label class="form-label" for="date_of_entry">وقت وتاريخ النزول في الفندق</label>
+                <input type="datetime-local" id="date_of_entry" name="date_of_entry" class="form-control" placeholder="يرجى ادخال وقت وتاريخ النزول">
                 <div class="fv-plugins-message-container invalid-feedback"></div>
             </div>
             <div class="col-12 col-md-6 fv-plugins-icon-container">
-                <label class="form-label" for="modalAddressLastName">رقم الهوية</label>
-                <input type="text" id="modalAddressLastName" name="numberCard" class="form-control" placeholder="يرجى ادخال اسم مالك الفندق">
+                <label class="form-label" for="date_of_left">وقت وتاريخ المغادرة</label>
+                <input type="datetime-local" id="date_of_left" name="date_of_left" class="form-control" placeholder="يرجى ادخال وقت وتاريخ المغادرة">
                 <div class="fv-plugins-message-container invalid-feedback"></div>
             </div>
             <div class="col-12 col-md-6 fv-plugins-icon-container">
-                <label for="inputAddress" class="form-label">نوع الهوية</label>
-                <select name="typeCard" class="form-select">
-                    <option  selected  value="1">بطاقة</option>
-                    <option   selected  value="1">جواز</option>
-                </select>
+                <label class="form-label" for="room_no">رقم الغرفة</label>
+                <input type="number" id="room_no" name="room_no" class="form-control" placeholder="الرجاء ادخال رقم الغرفة">
+                <div class="fv-plugins-message-container invalid-feedback"></div>
             </div>
             <div class="col-12 col-md-6 fv-plugins-icon-container">
+                <label class="form-label" for="floor_no">رقم الطابق</label>
+                <input type="number" id="floor_no" name="floor_no" class="form-control" placeholder="الرجاء ادخال رقم الغرفة">
+                <div class="fv-plugins-message-container invalid-feedback"></div>
+            </div>
+            {{-- <div class="col-12 col-md-6 fv-plugins-icon-container">
                 <label for="inputAddress" class="form-label">جهة القدوم</label>
                 <select name="destination" class="form-select">
                     <option  selected  value="1">شبوة</option>
                     <option value="-1">المهرة</option>
                     <option value="-1">من خارج اليمن</option>
                 </select>
-            </div>
-            <div class="col-12 col-md-6 fv-plugins-icon-container">
-                <label for="inputAddress" class="form-label">الغرض من الزيارة</label>
-                <select name="purpose" class="form-select">
-                    <option  selected  value="1">شبوة</option>
-                    <option value="-1">المهرة</option>
-                    <option value="-1">من خارج اليمن</option>
-                </select>
-            </div>
-            <div class="col-12 col-md-6 fv-plugins-icon-container">
-                <label for="inputAddress" class="form-label">الجنسية</label>
-                <select name="nationality" class="form-select">
-                    <option  selected  value="1">يمني</option>
-                    <option   selected  value="-1">سعودي</option>
-                </select>
-            </div>
-            <div class="col-12 col-md-6 fv-plugins-icon-container mt-3">
+            </div> --}}
+          
+            {{-- <div class="col-12 col-md-6 fv-plugins-icon-container mt-3">
                 <label for="formFile" class="form-label">صورة الهوية</label>
                 <input class="form-control" type="file" id="formFile"  name="photoCard">
                 <div class="fv-plugins-message-container invalid-feedback"></div>
-            </div>
+            </div> --}}
             <div class="col-12 text-center">
                 <button type="submit" class="btn btn-primary me-sm-3 me-1">اضافة</button>
                 <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="modal" aria-label="Close">الغاء</button>
@@ -232,41 +265,71 @@
             <h3 class="address-title">اضافة مرافق جديد</h3>
             <p class="address-subtitle">يرجى تعبيئة جميع البيانات</p>
             </div>
-            <form id="addNewAddressForm" class="row g-3 fv-plugins-bootstrap5 fv-plugins-framework" onsubmit="return false" novalidate="novalidate">
-
+            <form method="POST" action="{{route('newEscort')}}" id="addNewAddressForm" class="row g-3 fv-plugins-bootstrap5 fv-plugins-framework" onsubmit="return true " novalidate="novalidate">
+                @csrf
             <div class="col-12 col-md-6 fv-plugins-icon-container">
-                <label for="inputAddress" class="form-label"> اسم النزيل</label>
-                <select name="name" class="form-select">
-                    <option >اختار احدى النزلاء</option>
-                    <option>محمد خالد</option>
-                    <option>ناصر الغيثي</option>
+                <label for="inputAddress" class="form-label">  اسم النزيل </label>
+                <select name="booking_id" class="form-select">
+                    <option value="" >اختار احدى النزلاء</option>
+                 @isset($visitors)
+                 @foreach ($visitors as $gust)
+                 <option value="{{$gust->id}}">{{$gust->visitor_name}} </option>
+                 @endforeach
+                 @endisset
+                    
+                    
                 </select>
             </div>
             
             <div class="col-12 col-md-6 fv-plugins-icon-container">
-                <label class="form-label" for="modalAddressLastName">رقم الهوية</label>
-                <input type="text" id="modalAddressLastName" name="numberCard" class="form-control" placeholder="يرجى ادخال اسم مالك الفندق">
+                <label class="form-label" for="relation">العلاقة</label>
+                <input type="text" id="relation" name="relation" class="form-control" placeholder="يرجى ادخال اسم  العلاقة بين المرافق والنزيل">
                 <div class="fv-plugins-message-container invalid-feedback"></div>
             </div>
             <div class="col-12 col-md-6 fv-plugins-icon-container">
-                <label for="inputAddress" class="form-label">نوع الهوية</label>
-                <select name="typeCard" class="form-select">
-                    <option  selected  value="1">بطاقة</option>
-                    <option   selected  value="1">جواز</option>
-                </select>
+                <label class="form-label" for="escort_name">اسم المرافق</label>
+                <input type="text" id="escort_name" name="escort_name" class="form-control" placeholder="يرجى ادخال اسم النزيل">
+                <div class="fv-plugins-message-container invalid-feedback"></div>
+            </div>
+            <div class="col-12 col-md-6 fv-plugins-icon-container center">
+                <label class="form-label" for="ationality_id">الجنسية</label>
+                <select id="defaultSelect" class="form-select" name="nationality_id">
+                    <option value="">اختر الجنسية</option>
+                    
+                    @isset($nationalities)
+                    @foreach ($nationalities as $nationality)
+                    <option value=" {{$nationality->id}}"> 
+                        @isset ($nationality->nationality){{$nationality->nationality}} @endisset
+                    </option>
+                    @endforeach
+                    @endisset
+                  </select>              
+                  <div class="fv-plugins-message-container invalid-feedback"></div>
+            </div>
+          
+          
+            <div class="col-12 col-md-6 fv-plugins-icon-container">
+                <label for="identity_id" class="form-label">نوع الهوية</label>
+                <select name="identity_id" class="form-select">
+                    <option value=""> اختر نوع الهوية</option>   
+                    {{-- @isset($indetityTypes) --}}
+                    @foreach ($indetityTypes as $indetityType)
+                    <option value=" {{$indetityType->id}}"> 
+                       @isset($indetityType->identity_type) {{$indetityType->identity_type}} @endisset
+                    </option>
+                    @endforeach
+                    {{-- @endisset --}}  </select>
             </div>
             <div class="col-12 col-md-6 fv-plugins-icon-container">
-                <label for="inputAddress" class="form-label">الجنسية</label>
-                <select name="nationality" class="form-select">
-                    <option  value="">يمني</option>
-                    <option  value="">سعودي</option>
-                </select>
+                <label class="form-label" for="identity_no">رقم الهوية</label>
+                <input type="number" id="identity_no" name="identity_no" class="form-control" placeholder="يرجى ادخال رقم الهوية ">
+                <div class="fv-plugins-message-container invalid-feedback"></div>
             </div>
-            <div class="col-12 col-md-6 fv-plugins-icon-container mt-3">
+            {{-- <div class="col-12 col-md-6 fv-plugins-icon-container mt-3">
                 <label for="formFile" class="form-label">صورة الهوية</label>
                 <input class="form-control" type="file" id="formFile"  name="photoCard">
                 <div class="fv-plugins-message-container invalid-feedback"></div>
-            </div>
+            </div> --}}
             <div class="col-12 text-center">
                 <button type="submit" class="btn btn-primary me-sm-3 me-1">اضافة</button>
                 <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="modal" aria-label="Close">الغاء</button>

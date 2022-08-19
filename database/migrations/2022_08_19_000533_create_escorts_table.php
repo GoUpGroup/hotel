@@ -13,20 +13,19 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('owner_hotels', function (Blueprint $table) {
+        Schema::create('escorts', function (Blueprint $table) {
             $table->id();
-            
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
-            
+            $table->unsignedBigInteger('booking_id');
+            $table->foreign('booking_id')->references('id')->on('bookings')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('escort_name');
             $table->unsignedBigInteger('identity_id');
-            $table->foreign('identity_id')->references('id')->on('identity_types')->onUpdate('cascade')->onDelete('cascade');
-            $table->unsignedBigInteger('identity_no')->unique();
-
+            $table->foreign('identity_id')->references('id')->on('identity_types')->onUpdate('cascade')->onDelete('cascade'); 
+            $table->unsignedBigInteger('identity_no')->unique();;
             $table->unsignedBigInteger('nationality_id');
             $table->foreign('nationality_id')->references('id')->on('nationalities')->onUpdate('cascade')->onDelete('cascade');
-           
-            $table->boolean("is_active")->default(1);
+            $table->string('relation');
+            $table->integer('room_no')->default(null);
+            $table->integer('floor_no')->default(null);
             $table->timestamps();
         });
     }
@@ -38,6 +37,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('owner_hotels');
+        Schema::dropIfExists('escorts');
     }
 };

@@ -42,7 +42,7 @@
                 <div class="collapse" id="sidebarEmail">
                     <ul class="side-nav-second-level">
                         <li>
-                            <a href="{{route('listEmploeis')}}">عرض الموظفين</a>
+                            <a href="{{route('listReciption')}}">عرض الموظفين</a>
                         </li>
                     </ul>
                 </div>

@@ -11,4 +11,9 @@ class Hotel extends Model
     function owner(){
         return $this->belongsTo(OwnerHotel::class);
     }
+    
+    function reciption(){
+        return $this->hasMany(Reciption::class,'hotel_id');
+    }
+
 }

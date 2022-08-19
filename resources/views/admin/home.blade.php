@@ -37,29 +37,24 @@
                     <div class="col-sm-6 col-xl-3">
                         <div class="card shadow-none m-0 border-start">
                             <div class="card-body text-center">
-                                <i class="mdi mdi-car-2-plus text-muted" style="font-size: 24px;"></i>
-                                <h3><span>15</span></h3>
+                                <i class="dripicons-user-group text-muted" style="font-size: 24px;"></i>
+                                <h3><span>@isset($blocklistPersons)
+                                    {{count($blocklistPersons)}}
+                                @endisset</span></h3>
                                 <p class="text-muted font-15 mb-0">عدد المطلوبين</p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-sm-6 col-xl-3">
-                        <div class="card shadow-none m-0 border-start">
-                            <div class="card-body text-center">
-                                <i class="dripicons-checklist text-muted" style="font-size: 24px;"></i>
-                                <h3><span>55</span></h3>
-                                <p class="text-muted font-15 mb-0"> عدد المرافقين </p>
-                            </div>
-                        </div>
-                    </div>
-
+                 
                     <div class="col-sm-6 col-xl-3">
                         <div class="card shadow-none m-0 border-start">
                             <div class="card-body text-center">
                                 <i class="dripicons-user-group text-muted" style="font-size: 24px;"></i>
-                                <h3><span>52</span></h3>
-                                <p class="text-muted font-15 mb-0">عدد الستخدمين</p>
+                                <h3><span>@isset($blocklistPersons)
+                                    {{$hotelsNo}}
+                                @endisset</span></h3>
+                                <p class="text-muted font-15 mb-0">عدد الفنادق</p>
                             </div>
                         </div>
                     </div>
@@ -68,8 +63,23 @@
                         <div class="card shadow-none m-0 border-start">
                             <div class="card-body text-center">
                                 <i class="dripicons-graph-line text-muted" style="font-size: 24px;"></i>
-                                <h3><span>15</span> <i class="mdi mdi-arrow-up text-success"></i></h3>
+                                <h3><span>@isset($blocklistPersons)
+                                    {{$visitorsNo}}
+                                @endisset</span></h3>
+                                    
+                                    <i class="mdi mdi-arrow-up text-success"></i></h3>
                                 <p class="text-muted font-15 mb-0">عدد الزوار </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xl-3">
+                        <div class="card shadow-none m-0 border-start">
+                            <div class="card-body text-center">
+                                <i class="dripicons-checklist text-muted" style="font-size: 24px;"></i>
+                                <h3><span>@isset($blocklistPersons)
+                                    {{$escortsNo}}
+                                @endisset</span></h3>
+                                <p class="text-muted font-15 mb-0"> عدد المرافقين </p>
                             </div>
                         </div>
                     </div>

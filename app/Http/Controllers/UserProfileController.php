@@ -3,33 +3,55 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Hotel;
+use App\Models\Escort;
+
+use App\Models\Booking;
+use App\Models\Blocklist;
+use App\Models\Reciption;
 use App\Models\Nationality;
 use App\Models\UserProfile;
-
+use App\Models\IdentityType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class UserProfileController extends Controller
 {
+
     
     public function checkuserRole()
-    {       
-        $users=User::get();
+    {   
+        $blocklistPersons = Blocklist::with("nationality")->orderBy('id', 'desc')->get();
+        $hotelsNo = count(Hotel::get());
+        $visitorsNo =count(Booking::get());
+        $escortsNo = count(Escort::get());
+        $nationalities  = Nationality::get();
+        $indetityTypes = IdentityType::get();
+        /* Must be make condtino to given onle visitor of the hotel by hotel_id  */
+        $visitors = Booking::with("reception")->orderBy('id','desc')->get();
+        return $visitors;
+        $nationalities  = Nationality::get();
+        $indetityTypes = IdentityType::get();
+
         try {
             switch (Auth::user()->role) {
                 case 0:
-                    return view('admin.home');
+                    return view('admin.home')->with(['visitors'=>$visitors,
+                    'indetityTypes'=>$indetityTypes,
+                    'nationalities'=>$nationalities,
+                    'blocklistPersons'=>$blocklistPersons,
+                            'hotelsNo'=>$hotelsNo,
+                            'visitorsNo'=>$visitorsNo,
+                            'escortsNo'=>$escortsNo]);
                     break;
-    
                 case 1:
-                    return view('admin.dash-user-home');
-                    break;
-    
                 case 2:
-                    return view('admin.dash-user-home');
+                    return view('admin.dash-user-home')
+                            ->with(['visitors'=>$visitors,
+                            'indetityTypes'=>$indetityTypes,
+                            'nationalities'=>$nationalities,]);
                     break;
-    
                 default:
                     return $this->redirectTo = '/login';
                     break;
@@ -40,18 +62,10 @@ class UserProfileController extends Controller
         
     }
 
-    public function respionDashboard()
-    {
-        return view('admin.dash-user-home');
-    }
-
-    public function hotemDashboard()
-    {
-        return view('admin.dash-user-home');
-    }
+    
 
 
-    public function listEmploeis()
+    public function listReciption()
     {
         return view('mangerHotel.list-employ');
     }

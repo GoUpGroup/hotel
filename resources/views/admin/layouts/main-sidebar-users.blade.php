@@ -33,7 +33,7 @@
                 </a>
             </li>
             <li class="side-nav-item">
-                <a href="{{route('wallet')}}" class="side-nav-link">
+                <a href="#" class="side-nav-link">
                     <i class="dripicons-wallet"></i>
                     <span>المحفظة</span>
                 </a>
