@@ -24,8 +24,8 @@ return new class extends Migration
             $table->unsignedBigInteger('nationality_id');
             $table->foreign('nationality_id')->references('id')->on('nationalities')->onUpdate('cascade')->onDelete('cascade');
             $table->string('relation');
-            $table->integer('room_no')->default(null);
-            $table->integer('floor_no')->default(null);
+            $table->unsignedBigInteger('room_no')->default(null);
+            $table->unsignedBigInteger('floor_no')->default(null);
             $table->timestamps();
         });
     }

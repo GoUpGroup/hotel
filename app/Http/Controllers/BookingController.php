@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Booking;
+use App\Models\Reciption;
+use App\Models\OwnerHotel;
+use App\Models\Nationality;
+use App\Models\IdentityType;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreBookingRequest;
 use App\Http\Requests\UpdateBookingRequest;
-use App\Models\Booking;
-use App\Models\IdentityType;
-use App\Models\Nationality;
-use Illuminate\Support\Facades\Auth;
 
 class BookingController extends Controller
 {
@@ -18,8 +20,18 @@ class BookingController extends Controller
      */
     public function index()
     {
-        $visitors = Booking::with("escort")->orderBy('id', 'desc')->get();
-        $nationalities = Nationality::get();
+
+        $reciprtion = Reciption::where('user_id',Auth::user()->id)->get();
+        if(count($reciprtion)==0)
+                {
+                    $owner = OwnerHotel::with("hotel")->where('user_id',Auth::user()->id)->get();
+                    $hotel_id = $owner[0]->hotel[0]->id;
+                }
+        else{
+            $hotel_id =  $reciprtion[0]->hotel_id;
+        }
+       
+        $visitors = Booking::where('hotel_id', $hotel_id )->get();        $nationalities = Nationality::get();
  
         $indetityTypes = IdentityType::get();
         return view('admin.dash-user-home')
@@ -36,28 +48,35 @@ class BookingController extends Controller
      */
     public function store(StoreBookingRequest $request)
     {
-        try {
+        // try {
             $newBooking = new Booking();
             $newBooking->reciption_id = Auth::user()->id;
+           
 
+            $reciprtion = Reciption::where('user_id',Auth::user()->id)->get();
+            if(count($reciprtion)==0)
+            {
+                $owner = OwnerHotel::with("hotel")->where('user_id',Auth::user()->id)->get();
+                $hotel_id = $owner[0]->hotel[0]->id;
+            }
+            else{
+                $hotel_id =  $reciprtion[0]->hotel_id;
+            }
+            $newBooking->hotel_id = $hotel_id;
             $newBooking->visitor_name = $request->visitor_name;
             $newBooking->nationality_id = $request->nationality_id;
 
             $newBooking->identity_id = $request->identity_id;
             $newBooking->identity_no = $request->identity_no;
-           
-            $newBooking->date_of_entry = $request->date_of_entry;
-            $newBooking->date_of_left = $request->date_of_left;
-
             $newBooking->room_no = $request->room_no;
             $newBooking->floor_no = $request->floor_no;
             if($newBooking->save())
                 return redirect()->back()->with(['success' => 'تمت اضافة نزيل الفندق بنجاح ']);
             return redirect()->back()->with(['error' => 'عذرا لم يتم اضافة النزيل ']);
-        } catch (\Throwable$th) {
-            return redirect()->back()->with(['error' => 'عذرا هناك خطاء في تخزين البيانات']);
+        // } catch (\Throwable$th) {
+        //     return redirect()->back()->with(['error' => 'عذرا هناك خطاء في تخزين البيانات']);
 
-        }
+        // }
 
     }
 

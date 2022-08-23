@@ -76,12 +76,16 @@
 
         <div class="card">
             <div class="card-body">
-                <button type="button" class="btn btn-danger mb-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                    <i class="mdi mdi-plus-circle me-2"></i>إضافة نزيل جديد
-                </button>
-                <button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop1">
-                    <i class="mdi mdi-plus-circle me-2"></i>إضافة مرافق جديد
-                </button>
+               @if (Auth::user()->role == 2)
+                   
+               @else
+               <button type="button" class="btn btn-danger mb-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                <i class="mdi mdi-plus-circle me-2"></i>إضافة نزيل جديد
+            </button>
+            <button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop1">
+                <i class="mdi mdi-plus-circle me-2"></i>إضافة مرافق جديد
+            </button>
+               @endif
                 <!-- <div class="row mb-2">
                     <div class="col-sm-4">
                         <a href="javascript:void(0);" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle me-2"></i>اضافة مستخدم جديد</a>
@@ -209,16 +213,6 @@
                 <div class="fv-plugins-message-container invalid-feedback"></div>
             </div>
             <div class="col-12 col-md-6 fv-plugins-icon-container">
-                <label class="form-label" for="date_of_entry">وقت وتاريخ النزول في الفندق</label>
-                <input type="datetime-local" id="date_of_entry" name="date_of_entry" class="form-control" placeholder="يرجى ادخال وقت وتاريخ النزول">
-                <div class="fv-plugins-message-container invalid-feedback"></div>
-            </div>
-            <div class="col-12 col-md-6 fv-plugins-icon-container">
-                <label class="form-label" for="date_of_left">وقت وتاريخ المغادرة</label>
-                <input type="datetime-local" id="date_of_left" name="date_of_left" class="form-control" placeholder="يرجى ادخال وقت وتاريخ المغادرة">
-                <div class="fv-plugins-message-container invalid-feedback"></div>
-            </div>
-            <div class="col-12 col-md-6 fv-plugins-icon-container">
                 <label class="form-label" for="room_no">رقم الغرفة</label>
                 <input type="number" id="room_no" name="room_no" class="form-control" placeholder="الرجاء ادخال رقم الغرفة">
                 <div class="fv-plugins-message-container invalid-feedback"></div>
@@ -273,7 +267,9 @@
                     <option value="" >اختار احدى النزلاء</option>
                  @isset($visitors)
                  @foreach ($visitors as $gust)
-                 <option value="{{$gust->id}}">{{$gust->visitor_name}} </option>
+                 <option @isset($gust->id)
+                    value=" {{$gust->id}}">{{$gust->visitor_name}} </option>
+                 @endisset 
                  @endforeach
                  @endisset
                     
@@ -325,11 +321,18 @@
                 <input type="number" id="identity_no" name="identity_no" class="form-control" placeholder="يرجى ادخال رقم الهوية ">
                 <div class="fv-plugins-message-container invalid-feedback"></div>
             </div>
-            {{-- <div class="col-12 col-md-6 fv-plugins-icon-container mt-3">
-                <label for="formFile" class="form-label">صورة الهوية</label>
-                <input class="form-control" type="file" id="formFile"  name="photoCard">
+            <div class="col-12 col-md-6 fv-plugins-icon-container">
+                <label class="form-label" for="room_no"> رقم الغرفة </label>
+                
+                <input type="number" id="room_no" name="room_no" class="form-control" placeholder="رقم الغرفة" >
+                
                 <div class="fv-plugins-message-container invalid-feedback"></div>
-            </div> --}}
+            </div>
+            <div class="col-12 col-md-6 fv-plugins-icon-container">
+                <label class="form-label" for="floor_no">رقم الطابق</label>
+                <input type="number" id="floor_no" name="floor_no" class="form-control" placeholder="الرجاء ادخال رقم الغرفة" >
+                <div class="fv-plugins-message-container invalid-feedback"></div>
+            </div>
             <div class="col-12 text-center">
                 <button type="submit" class="btn btn-primary me-sm-3 me-1">اضافة</button>
                 <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="modal" aria-label="Close">الغاء</button>

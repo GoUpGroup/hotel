@@ -27,7 +27,7 @@ class BlocklistController extends Controller
             $nationalities = Nationality::get();
             $blocklistPersons = Blocklist::with("nationality")->orderBy('id', 'desc')->get();
             $hotelsNo = count(Hotel::get());
-            $visitorsNoNo =count(Booking::get());
+            $visitorsNo =count(Booking::get());
             $escortsNo = count(Escort::get());
         
             return view("admin.blocklist.list")
@@ -39,24 +39,7 @@ class BlocklistController extends Controller
         } catch (\Throwable $error) {
             return redirect()->back()->with(['error' => 'عذرا هناك خطا لم تتم اضافة البيانات']);
         }
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreBlocklistRequest  $request
-     * @return \Illuminate\Http\Response
-     */
+    }  
     public function store(StoreBlocklistRequest $request)
     {
         
@@ -154,4 +137,27 @@ class BlocklistController extends Controller
         }
     }
 
+/**
+ * [Description for checkBlocklist]
+ *
+ * @param mixed $name
+ * @param mixed $idintity
+ * @param mixed $passpost
+ * 
+ * @return [type]
+ * 
+ */
+public function checkBlocklist()   
+{
+    $identity = 127989;
+    $name ='uhlv lplr';
+    $blocklist = Blocklist::where('passport_no',$identity)||where('identity_no',$identity)||where('name',$name)->get();
+  
+    return $blocklist;
+    if($blocklist)
+        return "true";
+    return "false";
+
+    
+}
 }

@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             
             $table->unsignedBigInteger('reciption_id');
-            $table->foreign('reciption_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
-           
+            $table->foreign('reciption_id')->references('user_id')->on('reciptions')->onUpdate('cascade')->onDelete('cascade');
+            $table->unsignedBigInteger('hotel_id');
             $table->string('visitor_name');
             $table->unsignedBigInteger('identity_id');
             $table->foreign('identity_id')->references('id')->on('identity_types')->onUpdate('cascade')->onDelete('cascade');
@@ -27,11 +27,10 @@ return new class extends Migration
 
             $table->unsignedBigInteger('nationality_id');
             $table->foreign('nationality_id')->references('id')->on('nationalities')->onUpdate('cascade')->onDelete('cascade');
-            $table->integer('room_no');
-             $table->integer('floor_no')->default(null);
+            $table->unsignedBigInteger('room_no');
+             $table->unsignedBigInteger('floor_no')->default(null);
             $table->integer('department_no')->nullable();
-            $table->datetime('date_of_entry');
-            $table->datetime('date_of_left');
+            $table->datetime('date_of_left')->nullable();
             $table->boolean("is_active")->default(1);
             $table->timestamps();
         });

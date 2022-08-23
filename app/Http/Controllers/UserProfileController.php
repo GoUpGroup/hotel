@@ -9,6 +9,7 @@ use App\Models\Escort;
 use App\Models\Booking;
 use App\Models\Blocklist;
 use App\Models\Reciption;
+use App\Models\OwnerHotel;
 use App\Models\Nationality;
 use App\Models\UserProfile;
 use App\Models\IdentityType;
@@ -23,20 +24,22 @@ class UserProfileController extends Controller
     public function checkuserRole()
     {   
         $blocklistPersons = Blocklist::with("nationality")->orderBy('id', 'desc')->get();
+        $visitors = Booking::get();
         $hotelsNo = count(Hotel::get());
         $visitorsNo =count(Booking::get());
         $escortsNo = count(Escort::get());
         $nationalities  = Nationality::get();
         $indetityTypes = IdentityType::get();
-        /* Must be make condtino to given onle visitor of the hotel by hotel_id  */
-        $visitors = Booking::with("reception")->orderBy('id','desc')->get();
-        return $visitors;
         $nationalities  = Nationality::get();
         $indetityTypes = IdentityType::get();
+        
+        $reciprtion = Reciption::where('user_id',Auth::user()->id)->get();
+          
 
         try {
             switch (Auth::user()->role) {
                 case 0:
+                    
                     return view('admin.home')->with(['visitors'=>$visitors,
                     'indetityTypes'=>$indetityTypes,
                     'nationalities'=>$nationalities,
@@ -47,6 +50,16 @@ class UserProfileController extends Controller
                     break;
                 case 1:
                 case 2:
+                    if(count($reciprtion)==0)
+                {
+                    $owner = OwnerHotel::with("hotel")->where('user_id',Auth::user()->id)->get();
+                    $hotel_id = $owner[0]->hotel[0]->id;
+                }
+                else{
+                    $hotel_id =  $reciprtion[0]->hotel_id;
+                }
+                    $visitors = Booking::where('hotel_id', $hotel_id )->get();
+                   
                     return view('admin.dash-user-home')
                             ->with(['visitors'=>$visitors,
                             'indetityTypes'=>$indetityTypes,

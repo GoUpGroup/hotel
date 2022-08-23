@@ -140,6 +140,19 @@
                 </a>
             </li>
 
+            <li class="side-nav-item">
+                <a href="{{ route('listNationality') }}" class="side-nav-link">
+                    <i class="dripicons-gear"></i>
+                    <span>الجنسيات</span>
+                </a>
+            </li>
+            <li class="side-nav-item">
+             <a href="{{route('listIdentityType')}}" class="side-nav-link">
+                 <i class="dripicons-gear"></i>
+                 <span>انواع الهويات</span>
+             </a>
+         </li>
+ 
             
            
 {{--            <li class="side-nav-item">--}}

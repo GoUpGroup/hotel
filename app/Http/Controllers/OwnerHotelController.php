@@ -43,6 +43,7 @@ class OwnerHotelController extends Controller
      */
     public function store(StoreOwnerHotelRequest $request)
     {
+        try{
         $newUser = new User();
         $newUser->name = $request->name;
         $newUser->user_name = $request->user_name;
@@ -68,12 +69,21 @@ class OwnerHotelController extends Controller
                 $newHotel->hotelName = $request->hotelName;
                 $newHotel->lisciens_no = $request->lisciens_no;
                 
-                $newHotel->save();
-                return "الحمد لله";
+                if($newHotel->save())
+                    return redirect()->back()->with(['success' => 'تمت اضافة نزيل الفندق بنجاح ']);
+                return redirect()->back()->with(['error' => 'عذرا لم يتم اضافة النزيل ']);
+            }//end if owner save() 
+        }//end user save()
+
+        }//end try
+            catch (\Throwable$th) {
+                return redirect()->back()->with(['error' => 'عذرا هناك خطاء في تخزين البيانات']);
+    
+            
             }
            
             
-        }
+        
 
        
     }

@@ -34,9 +34,11 @@ class EscortController extends Controller
             $newEscort->nationality_id = $request->nationality_id;
             $newEscort->identity_id = $request->identity_id;
             $newEscort->identity_no = $request->identity_no;
+            $newEscort->room_no = $request->room_no;
+            $newEscort->floor_no = $request->floor_no;
             if($newEscort->save())
-                return redirect()->back()->with(['success' => 'تمت اضافة نزيل الفندق بنجاح ']);
-            return redirect()->back()->with(['error' => 'عذرا لم يتم اضافة النزيل ']);
+                return redirect()->back()->with(['success' => 'تمت مرافق نزيل الفندق بنجاح ']);
+            return redirect()->back()->with(['error' => 'عذرا لم يتم اضافة مرافق النزيل ']);
         } catch (\Throwable$th) {
             return redirect()->back()->with(['error' => 'عذرا هناك خطاء في تخزين البيانات']);
 

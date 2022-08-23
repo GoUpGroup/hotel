@@ -33,7 +33,7 @@ class Booking extends Model
     }
     public function reception() 
     {
-       return $this->belongsTo(Reciption::class,'user_id');
+       return $this->hasMany(Reciption::class,'user_id');
     }
     
     

@@ -21,6 +21,6 @@ class Reciption extends Model
     }
     public function booking()
     {
-        return $this->hasMany(Booking::class,'reciption_id');
+        return $this->belongsTo(Booking::class,'reciption_id');
     }
 }

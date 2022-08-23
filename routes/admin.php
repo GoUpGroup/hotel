@@ -10,8 +10,10 @@ use \App\Http\Controllers\CategoryController;
 use App\Http\Controllers\BlocklistController;
 use App\Http\Controllers\OwnerHotelController;
 use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\NationalityController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\VehicleTypeController;
+use App\Http\Controllers\IdentityTypeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,15 +62,32 @@ Route::group(['middleware' => 'is.admin'], function () {
     Route::get('/report', [WalltsController::class, 'index'])->name('report');
 
     ##Blocklist
-    Route::get('/admin', [BlocklistController::class, 'index'])->name('admin');
+    Route::get('/admin', [UserProfileController::class, 'checkuserRole'])->name('admin');
     Route::get('/blocklist',[BlocklistController::class,'index'])->name('listBlocklist');
     Route::post('/storeblocklist',[BlocklistController::class,'store'])->name('storeblocklist');
     Route::get('/edit_blocklistPersons/{personId}',[BlocklistController::class,'edit'])->name('edit_blocklistPersons');
     Route::post('/update_blocklistPersons/{personId}',[BlocklistController::class,'update'])->name('updateblocklist');
     Route::get('/toggle_blocklistPersons/{personId}',[BlocklistController::class,'toggle'])->name('toggle_blocklistPersons');
-
+    Route::get('/checkBlocklist',[BlocklistController::class,'checkBlocklist'])->name('checkBlocklist');
     ##Owner Hotel
     Route::get('/hotellist',[OwnerHotelController::class,'index'])->name('hotelist');
     Route::get('/store_owner_hotel',[OwnerHotelController::class,'store'])->name('storeOwnerHotel');
     Route::get('/edit_hotel/{id}',[OwnerHotelController::class,'edit'])->name('edithotel');
+
+     ##Nationality
+     Route::get('/add_nationality', [NationalityController::class, "index"])->name("listNationality");
+     Route::post('/save_nationality', [NationalityController::class, "store"])->name("store_nationality");
+     Route::get('edit_nationality/{nationalityId}', [NationalityController::class, 'edit'])->name('edit_nationality');
+     Route::post('update_nationality/{nationalityId}', [NationalityController::class, 'update'])->name('update_nationality');
+     Route::get('toggle_nationality/{nationalityId}', [NationalityController::class, 'toggle'])->name('toggle_nationality');
+     Route::get('list_nationality', [NationalityController::class, 'listnationality'])->name('list_nationality');
+ 
+     ##Identity  Type
+     Route::get('/add_identity_type', [IdentityTypeController::class, "index"])->name("listIdentityType");
+     Route::post('/save_identity_type', [IdentityTypeController::class, "store"])->name("store_identity_type");
+     Route::get('edit_identity_type/{IdentityTypeId}', [IdentityTypeController::class, 'edit'])->name('edit_identity_type');
+     Route::post('update_identity_type/{IdentityTypeId}', [IdentityTypeController::class, 'update'])->name('update_identity_type');
+     Route::get('toggle_identity_type/{IdentityTypeId}', [IdentityTypeController::class, 'toggle'])->name('toggle_identity_type');
+     Route::get('list_identity_type', [IdentityTypeController::class, 'listIdentity_type'])->name('list_identity_type');
+    Route::get('list_blocklidt',[BlocklistController::class,'index'])->name();
 });

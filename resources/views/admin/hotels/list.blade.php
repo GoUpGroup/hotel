@@ -148,7 +148,7 @@
               <div class="fv-plugins-message-container invalid-feedback"></div>
             </div>
             <div class="col-12 col-md-6 fv-plugins-icon-container">
-                <label class="form-label" for="modalAddressLastName">عنوان الفندق</label>
+                <label class="form-label" for="modalAddressLastName">عنوان مالك الفندق</label>
                 <input type="text" id="modalAddressLastName" name="hotel_address" class="form-control" placeholder="عنوان الفندق">
               <div class="fv-plugins-message-container invalid-feedback"></div>
             </div>
@@ -168,7 +168,7 @@
               <div class="fv-plugins-message-container invalid-feedback"></div>
             </div>
             <div class="col-12 col-md-6 fv-plugins-icon-container">
-                <label class="form-label" for="modalAddressLastName">العنوان</label>
+                <label class="form-label" for="modalAddressLastName">عنوان الفندق</label>
                 <input type="text" id="modalAddressLastName" name="address" class="form-control" placeholder="يرجى ادخال عنوان الفندق">
               <div class="fv-plugins-message-container invalid-feedback"></div>
             </div>
